@@ -1,18 +1,17 @@
-version: "3.8"
-
 services:
   palmr:
     image: kyantech/palmr:latest
-    container_name: palmr
     ports:
       - "5487:5487"
     environment:
-      ENABLE_S3: false
-      ENCRYPTION_KEY: your_encryption_key_here
       PALMR_UID: 1000
       PALMR_GID: 1000
+      ENCRYPTION_KEY: your_encryption_key_here
     volumes:
-      - palmr_data:/data
-
+      - palmr_data:/app/palmr-app/uploads
+    command: >
+      sh -c "mkdir -p /app/palmr-app/uploads &&
+             chown -R 1000:1000 /app/palmr-app/uploads &&
+             exec node /app/palmr-app/main.js"
 volumes:
   palmr_data:
